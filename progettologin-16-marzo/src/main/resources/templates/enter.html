@@ -1,31 +1,11 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Entrata</title>
-    <link rel="stylesheet" href="css/enter.css">
-</head>
-<body>
-<h1>sei entrato</h1>
-
-<div class="container">
-  <form action="">
-
-    <label for="username">First Name</label>
-    <input type="text" id="username" name="username" placeholder="es. Mario Rossi">
-
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" placeholder="es. nome@email.com">
-
-    <label for="password">Password</label>
-	<input type="password" id="password" name="password" >
-
-    <label for="birthday">Birthday</label>
-    <input type="date" id="birthday" name="birthday">
-
-
-    <input type="submit" value="Submit">
-
-  </form>
-</div>
-</body>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Sito Luca</title>
+    </head>
+    <body>
+        <h1>Benvenuto su Sito!</h1>
+        
+        <p>Clicca <a th:href="@{/hello}">qui</a> per il login!</p>
+    </body>
 </html>
