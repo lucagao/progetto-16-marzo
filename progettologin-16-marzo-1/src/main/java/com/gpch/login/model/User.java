@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -41,11 +43,15 @@ public class User {
     @Column(name = "last_name")
     @NotEmpty(message = "*Please provide your last name")
     private String lastName;
-    @Column(name = "active")
+    @Column(name = "birthday")
+    @NotEmpty(message = "*Please provide your birthday")
+    private String birthday;
+	@Column(name = "active")
     private Boolean active;
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+    
 	public int getId() {
 		return id;
 	}
@@ -93,5 +99,11 @@ public class User {
 	}
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+    public String getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
 	}
 }
