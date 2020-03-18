@@ -1,43 +1,26 @@
 package com.gpch.login.service;
 
-import java.io.UnsupportedEncodingException;
-
 import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
- 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
- 
-import com.gpch.login.model.Mail; 
 
-@Service("mailService")
-public class MailServiceImpl implements MailService {
- 
-    @Autowired
-    JavaMailSender mailSender;
- 
-    public void sendEmail(Mail mail) {
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
- 
-        try {
- 
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
- 
-            mimeMessageHelper.setSubject(mail.getMailSubject());
-            mimeMessageHelper.setFrom(new InternetAddress(mail.getMailFrom(), "Lucagao11@gmail.com"));
-            mimeMessageHelper.setTo(mail.getMailTo());
-            mimeMessageHelper.setText(mail.getMailContent());
- 
-            mailSender.send(mimeMessageHelper.getMimeMessage());
- 
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
- 
+@Service
+public class MailServiceImpl implements MailService{
+
+	@Autowired
+	private JavaMailSender javaMailSender;
+
+	public void inviaMail(String destinatarioMail, String oggettoMail, String messaggioMail) throws MessagingException {
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+		mimeMessageHelper.setSubject(oggettoMail);
+		mimeMessageHelper.setTo(destinatarioMail);
+		mimeMessageHelper.setText(messaggioMail, true);
+		javaMailSender.send(mimeMessage);
+	}
+
 }
