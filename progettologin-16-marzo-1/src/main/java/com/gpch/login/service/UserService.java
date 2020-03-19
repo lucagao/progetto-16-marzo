@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 public class UserService {
-
+	@Autowired
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -42,5 +43,19 @@ public class UserService {
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
         return userRepository.save(user);
     }
+    public void add(User user) {
+    	
+    }
+    
+    public boolean findByUsernameOrEmail(User user) {
+    
+    return true;
+    }
+    
+	public User getById(Integer id) {
 
+		User pUser = userRepository.findById(id);
+		
+		return pUser;
+	}
 }

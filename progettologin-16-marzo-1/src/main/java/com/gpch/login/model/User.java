@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+import com.gpch.login.model.Images;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -50,6 +52,8 @@ public class User {
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Set <Images> immagini;
     
 	public int getId() {
 		return id;
@@ -105,4 +109,11 @@ public class User {
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
+	public Set<Images> getImmagini() {
+		return immagini;
+	}
+	public void setImmagini(Set<Images> immagini) {
+		this.immagini = immagini;
+	}
+	
 }

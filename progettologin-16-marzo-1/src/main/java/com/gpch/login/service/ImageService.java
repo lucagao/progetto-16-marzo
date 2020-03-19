@@ -2,12 +2,12 @@ package com.gpch.login.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.gpch.login.model.Image;
+import com.gpch.login.model.Images;
 
 public interface ImageService {
 
-	public Image salvaFile(MultipartFile file); // upload
+	public Images salvaFile(MultipartFile file); // upload
 
-	public Image recuperaFile(Long fileId); // download
+	public Images recuperaFile(Long fileId); // download
 
 }

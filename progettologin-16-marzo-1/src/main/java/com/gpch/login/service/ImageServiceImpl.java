@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.gpch.login.model.Image;
+import com.gpch.login.model.Images;
 import com.gpch.login.repository.ImageRepository;
 
 @Service
@@ -17,7 +17,7 @@ public class ImageServiceImpl implements ImageService {
 	private ImageRepository immagineRepos;
 
 	@Override
-	public Image salvaFile(MultipartFile file) {
+	public Images salvaFile(MultipartFile file) {
 		// Normalize file name
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -27,7 +27,7 @@ public class ImageServiceImpl implements ImageService {
 				return null;
 			}
 
-			Image dbFile = new Image(fileName, file.getContentType(), file.getBytes());
+			Images dbFile = new Images(fileName, file.getContentType(), file.getBytes());
 
 			return immagineRepos.save(dbFile);
 		} catch (IOException ex) {
@@ -36,7 +36,7 @@ public class ImageServiceImpl implements ImageService {
 	}
 
 	@Override
-	public Image recuperaFile(Long fileId) {
+	public Images recuperaFile(Long fileId) {
 		return immagineRepos.findById(fileId).orElseThrow(() -> null); 
 	}
 }

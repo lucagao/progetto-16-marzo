@@ -1,5 +1,6 @@
 package com.gpch.login.controller;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.gpch.login.model.Image;
+import com.gpch.login.model.Images;
 import com.gpch.login.model.User;
 import com.gpch.login.service.ImageService;
 import com.gpch.login.service.MailService;
@@ -37,6 +39,7 @@ public class LoginController {
 	
 	@Autowired
 	private MailService mailService;
+
 
     @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
     public ModelAndView login(){
@@ -71,22 +74,30 @@ public class LoginController {
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());
             modelAndView.setViewName("registration");
-            //userService.add(user);
-    		//mailService.inviaMail(user.getEmail(), "confirm registration", "you are registered");
-
         }
         return modelAndView;
     }
     
+	@PostMapping("/login")
+	public boolean addUser(@RequestBody User user) throws MessagingException {
+		if (userService.findByUsernameOrEmail(user)) {
+			return false;
+		}
+		userService.add(user);
+		mailService.inviaMail(user.getEmail(), "conferma login", "Login effettuata correttamente");
+		return true;
+	}
+	
     @GetMapping("/home")
     public String root() {
         return "/home";
     }
     
 	@PostMapping("/image")
-	public String fileUpload(@RequestParam("file") MultipartFile file, Model model) { // upload del fils
-
+	public String fileUpload(@RequestParam("file") MultipartFile file,@RequestParam Integer id, Model model) { // upload del fils
+		User u = userService.getById(id);
 		imageService.salvaFile(file);
+		model.addAttribute("id", id);
 		model.addAttribute("file", file);
 		
 	return "/grazie";
@@ -95,7 +106,7 @@ public class LoginController {
 	@GetMapping("/downloadFile/{fileId}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable Long fileId) { // servizio di download
 		// Load file from database
-		Image dbFile = imageService.recuperaFile(fileId);
+		Images dbFile = imageService.recuperaFile(fileId);
 
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(dbFile.getFileType()))
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
