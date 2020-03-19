@@ -88,13 +88,31 @@ public class LoginController {
 		return true;
 	}
 	
+	@PostMapping(path = "/modifiche")
+	public String addNewUser(@RequestParam String name, @RequestParam String email, @RequestParam String userName,
+			String birthday, String lastName,Model model) {
+		// @ResponseBody means the returned String is the response, not a view name
+		// @RequestParam means it is a parameter from the GET or POST request
+
+		User n = new User();
+		n.setName(name);
+		n.setEmail(email);
+		n.setBirthday(birthday);
+		n.setLastName(lastName);
+		n.setUserName(userName);
+		userService.save(n);
+		model.addAttribute("userList", userService.findAll());
+		return "/grazie";
+	}
+
+	
     @GetMapping("/home")
     public String root() {
         return "/home";
     }
     
 	@PostMapping("/image")
-	public String fileUpload(@RequestParam("file") MultipartFile file,@RequestParam Integer id, Model model) { // upload del fils
+	public String fileUpload(@RequestParam("file") MultipartFile file,@RequestParam Long id, Model model) { // upload del fils
 		User u = userService.getById(id);
 		imageService.salvaFile(file);
 		model.addAttribute("id", id);

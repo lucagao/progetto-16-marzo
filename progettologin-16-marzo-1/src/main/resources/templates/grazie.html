@@ -8,6 +8,49 @@
 
 <body>
 	<h1>Grazie per la tua immagine</h1>
-	<div></div>
+	<br>
+	<h2>Per eventuali modifiche</h2>
+	
+		<form th:action="@{/modifiche}" method="post">
+		<h1>Form</h1>
+		<p>
+			Nome: <input type="text" name="name" />
+		</p>
+		<p>
+			Lastname: <input type="text" name="email" />
+		</p>
+		<p>
+			Email: <input type="text" name="telefono" />
+		</p>
+		<p>
+		<p>
+			Birthday: <input type="text" name="telefono" />
+		</p>
+		<p>
+		<p>
+			Username: <input type="text" name="telefono" />
+		</p>
+		<p>
+			<input type="submit" value="send" />
+		</p>
+	</form>
+	
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Lastname</th>
+			<th>Email</th>
+			<th>Birthday</th>
+			<th>Username</th>
+		</tr>
+		<tr th:each="user : ${userList}">
+			<td th:text="${user.name}">paolo</td>
+			<td th:text="${user.lasName}">rossi</td>
+			<td th:text="${user.email}">paolo@gmail.com</td>
+			<td th:text="${user.birthday}">457658677</td>
+			<td th:text="${user.userName}">paolo</td>
+		</tr>
+	</table>
+	
 </body>
 </html>

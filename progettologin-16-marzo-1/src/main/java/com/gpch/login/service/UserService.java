@@ -52,10 +52,15 @@ public class UserService {
     return true;
     }
     
-	public User getById(Integer id) {
-
-		User pUser = userRepository.findById(id);
-		
-		return pUser;
+	public User getById(Long id) {
+		Optional<User> pUser = userRepository.findById(id);
+		return (pUser.isPresent() ? pUser.get() : null);
+	}
+	public void save(User u) {
+		// TODO Auto-generated method stub
+		userRepository.save(u);
+	}
+	public Iterable<User> findAll() {
+		return userRepository.findAll();
 	}
 }
