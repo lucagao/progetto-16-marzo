@@ -72,7 +72,7 @@ public class LoginController {
             modelAndView.addObject("user", new User());
             modelAndView.setViewName("registration");
             //userService.add(user);
-    		//mailService.inviaMail(user.getEmail(), "conferma registrazione", "Registrazione effettuata correttamente");
+    		//mailService.inviaMail(user.getEmail(), "confirm registration", "you are registered");
 
         }
         return modelAndView;
@@ -102,16 +102,6 @@ public class LoginController {
 				.body(new ByteArrayResource(dbFile.getData()));
 	}
 
-   /* @RequestMapping(value="/home", method = RequestMethod.GET)
-    public ModelAndView home(){
-        ModelAndView modelAndView = new ModelAndView();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByUserName(auth.getName());
-        modelAndView.addObject("userName", "Welcome " + user.getUserName() + "/" + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-        modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
-        modelAndView.setViewName("admin/home");
-        return modelAndView;
-    } */
 
 
 }

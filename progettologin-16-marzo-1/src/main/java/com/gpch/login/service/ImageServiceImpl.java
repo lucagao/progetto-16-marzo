@@ -37,6 +37,6 @@ public class ImageServiceImpl implements ImageService {
 
 	@Override
 	public Image recuperaFile(Long fileId) {
-		return immagineRepos.findById(fileId).orElseThrow(() -> null); // se il risultato della ricerca è null, restituisce null, altrimenti restituisce il risultato
+		return immagineRepos.findById(fileId).orElseThrow(() -> null); 
 	}
 }
