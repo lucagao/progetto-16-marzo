@@ -18,7 +18,7 @@ public class ToDoController {
 
     @Autowired private ToDoService todoService;
 
-    @GetMapping("/")
+    @GetMapping("/todo")
     public String ToDo(Model model){
         List<ToDo>todos = todoService.getAllTodo();
         model.addAttribute("todos", todos);
@@ -27,11 +27,6 @@ public class ToDoController {
         model.addAttribute("isAdd", true);
         return "todo";
 
-    }
-
-    @GetMapping("/test")
-    public String test(Model model){
-        return "test";
     }
 
     @PostMapping(value="/save")
