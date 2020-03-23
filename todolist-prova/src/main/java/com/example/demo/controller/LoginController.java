@@ -52,7 +52,7 @@ public class LoginController {
     }
     
     @RequestMapping(value="/registration", method = RequestMethod.GET)
-    public ModelAndView registration(@RequestParam("file") MultipartFile file){
+    public ModelAndView registration(){
         ModelAndView modelAndView = new ModelAndView();
         User user = new User();
         modelAndView.addObject("user", user);
@@ -62,7 +62,7 @@ public class LoginController {
     
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
+    public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) throws MessagingException {
         ModelAndView modelAndView = new ModelAndView();
         User userExists = userService.findUserByUserName(user.getUserName());
         if (userExists != null) {
@@ -74,21 +74,12 @@ public class LoginController {
             modelAndView.setViewName("registration");
         } else {
             userService.saveUser(user);
+            mailService.sendMail(user.getEmail(), "confirm registration", "Succesfully registered");
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());
             modelAndView.setViewName("registration");
         }
         return modelAndView;
     }
-    
-	@PostMapping("/login")
-	public boolean addUser(@RequestBody User user) throws MessagingException {
-		if (userService.findByUsernameOrEmail(user)) {
-			return false;
-		}
-		userService.add(user);
-		mailService.sendMail(user.getEmail(), "conferma login", "Login effettuata correttamente");
-		return true;
-	}
 
 }

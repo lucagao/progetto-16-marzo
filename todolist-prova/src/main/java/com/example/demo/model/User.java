@@ -1,13 +1,16 @@
 package com.example.demo.model;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.example.demo.model.Images;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -37,8 +40,9 @@ public class User {
     @NotEmpty(message = "*Please provide your last name")
     private String lastName;
     @Column(name = "birthday")
-    @NotEmpty(message = "*Please provide your birthday")
-    private String birthday;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "*Please provide your birthday")
+    private LocalDate birthday;
 	@Column(name = "active")
     private Boolean active;
     @ManyToMany(cascade = CascadeType.MERGE)
@@ -96,10 +100,10 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-    public String getBirthday() {
+    public LocalDate getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(String birthday) {
+	public void setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
 	}
 	public Images getImage() {

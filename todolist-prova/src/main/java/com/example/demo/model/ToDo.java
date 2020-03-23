@@ -1,7 +1,12 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -25,7 +30,9 @@ public class ToDo implements Serializable {
     @Column(name = "updated_date")
     private Date updatedDate;
     @Column(name = "expiration_date")
-    private String expiration_date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull
+    private LocalDate expiration_date;
     public Long getId() {
         return id;
     }
@@ -84,11 +91,11 @@ public class ToDo implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-	public String getExpiration_date() {
+	public LocalDate getExpiration_date() {
 		return expiration_date;
 	}
 
-	public void setExpiration_date(String expiration_date) {
+	public void setExpiration_date(LocalDate expiration_date) {
 		this.expiration_date = expiration_date;
 	}
     
