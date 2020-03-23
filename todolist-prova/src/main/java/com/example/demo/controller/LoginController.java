@@ -9,6 +9,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.model.Images;
 import com.example.demo.model.User;
+import com.example.demo.service.ImageServiceImpl;
 import com.example.demo.service.MailService;
 import com.example.demo.service.MailServiceImpl;
 import com.example.demo.service.UserService;
@@ -36,6 +39,9 @@ public class LoginController {
 	
 	@Autowired
 	private MailService mailService;
+	
+	@Autowired
+	private ImageServiceImpl imageService;
 
 
     @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
@@ -44,16 +50,16 @@ public class LoginController {
         modelAndView.setViewName("login");
         return modelAndView;
     }
-
-
+    
     @RequestMapping(value="/registration", method = RequestMethod.GET)
-    public ModelAndView registration(){
+    public ModelAndView registration(@RequestParam("file") MultipartFile file){
         ModelAndView modelAndView = new ModelAndView();
         User user = new User();
         modelAndView.addObject("user", user);
         modelAndView.setViewName("registration");
         return modelAndView;
     }
+    
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {

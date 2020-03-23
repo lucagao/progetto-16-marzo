@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Images;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.repository.RoleRepository;
@@ -63,4 +64,10 @@ public class UserService {
 	public Iterable<User> findAll() {
 		return userRepository.findAll();
 	}
+	public void uploadImage(User user, Images image) {
+		// TODO Auto-generated method stub
+		user.setImage(image);
+		userRepository.save(user);
+	}	
+
 }

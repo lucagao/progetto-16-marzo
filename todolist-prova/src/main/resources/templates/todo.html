@@ -72,6 +72,7 @@
 								<th>Email</th>
 								<th>Activity</th>
 								<th>Expiration Date</th>
+								<th>Add Image</th>
 								<th>Action</th>
 							</tr>
 						</thead>
@@ -82,6 +83,7 @@
 								<td th:text="${todo.email}"></td>
 								<td th:text="${todo.activity}"></td>
 								<td th:text="${todo.expiration_date}"></td>
+								<td><a th:href="@{/image}">Metti Immagine</a></td>
 								<td><a th:href="@{'/getToDo/'+${todo.id}}"> <i
 										class="fa fa-edit" style="font-size: 21px;"></i>
 								</a> <a th:href="@{'/deleteToDo/'+${todo.id}}"> <i

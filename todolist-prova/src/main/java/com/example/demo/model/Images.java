@@ -24,10 +24,6 @@ public class Images {
 
 	@Lob
 	private byte[] data;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JsonIgnore
-	private User user;
 
 	public Images() {
 	}
@@ -68,14 +64,6 @@ public class Images {
 
 	public void setData(byte[] data) {
 		this.data = data;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 	
 }
