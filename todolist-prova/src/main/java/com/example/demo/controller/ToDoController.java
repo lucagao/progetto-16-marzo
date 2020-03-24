@@ -5,6 +5,11 @@ import com.example.demo.model.ToDo;
 import com.example.demo.model.User;
 import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -105,4 +110,14 @@ public class ToDoController {
 		modelAndView.setViewName("image");
 		return modelAndView;
 	}
+    @GetMapping("/downloadFile/{fileId}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
+        // Load file from database
+        Images dbFile = imageService.recuperaFile(fileId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(dbFile.getFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
+                .body(new ByteArrayResource(dbFile.getData()));
+    }
 }

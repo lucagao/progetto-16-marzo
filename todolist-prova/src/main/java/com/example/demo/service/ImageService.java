@@ -8,6 +8,6 @@ public interface ImageService {
 
 	public Images salvaFile(MultipartFile file); // upload
 
-	public Images recuperaFile(Long fileId); // download
+	public Images recuperaFile(String fileId); // download
 
 }
