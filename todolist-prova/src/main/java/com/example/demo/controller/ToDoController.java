@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Images;
+import com.example.demo.model.Sched;
 import com.example.demo.model.ToDo;
 import com.example.demo.model.User;
 import com.example.demo.service.*;
@@ -10,6 +11,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +32,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.TimeZone;
 
 @Controller
 public class ToDoController {
@@ -35,10 +42,14 @@ public class ToDoController {
     @Autowired
     private UserService userService;
 	
-    @Autowired private ToDoService todoService;
+    @Autowired
+    private ToDoService todoService;
     
     @Autowired
 	private ImageServiceImpl imageService;
+    
+	@Autowired
+	TaskScheduler scheduler;
 
     @GetMapping("/todo")
     public String ToDo(Model model){
@@ -119,5 +130,18 @@ public class ToDoController {
                 .contentType(MediaType.parseMediaType(dbFile.getFileType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
                 .body(new ByteArrayResource(dbFile.getData()));
+    }
+    @Scheduled(fixedRate = 1800000)
+    public void sendMessageActivity(@RequestBody Sched sched) {
+       
+		LocalDateTime dateTime = sched.getDate();
+		int minute = dateTime.getMinute();
+		int hours = dateTime.getHour();
+		int day = dateTime.getDayOfMonth();
+		int month = dateTime.getMonth().getValue();
+		String expression = " 0 " + (minute - 30) + " " + hours + " " + day + " " + month + " ?";
+		System.out.println(expression);
+		CronTrigger trigger = new CronTrigger(expression, TimeZone.getTimeZone(TimeZone.getDefault().getID()));
+		scheduler.schedule(sched, trigger);
     }
 }
