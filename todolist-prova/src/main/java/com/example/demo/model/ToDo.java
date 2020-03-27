@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import javax.mail.MessagingException;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -7,11 +8,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+
+import com.example.demo.model.User;
+import com.example.demo.service.*;
 
 @Entity
 @Table(name = "user_todo")
-public class ToDo implements Serializable {
+public class ToDo implements Runnable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,9 +35,9 @@ public class ToDo implements Serializable {
     @Column(name = "updated_date")
     private Date updatedDate;
     @Column(name = "expiration_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     @NotNull
-    private LocalDate expiration_date;
+    private LocalDateTime expiration_date;
     public Long getId() {
         return id;
     }
@@ -91,12 +96,26 @@ public class ToDo implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-	public LocalDate getExpiration_date() {
+	public LocalDateTime getExpiration_date() {
 		return expiration_date;
 	}
 
-	public void setExpiration_date(LocalDate expiration_date) {
+	public void setExpiration_date(LocalDateTime expiration_date) {
 		this.expiration_date = expiration_date;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		User user = new User();
+		MailServiceImpl mailService = new MailServiceImpl();
+
+		try {
+			mailService.sendMail(user.getEmail(), "Activity", "You have to do some activity");
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
     
 }

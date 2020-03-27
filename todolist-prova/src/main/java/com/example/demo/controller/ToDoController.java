@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Images;
-import com.example.demo.model.Sched;
 import com.example.demo.model.ToDo;
 import com.example.demo.model.User;
 import com.example.demo.service.*;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -131,10 +132,12 @@ public class ToDoController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
                 .body(new ByteArrayResource(dbFile.getData()));
     }
-    @Scheduled(fixedRate = 1800000)
-    public void sendMessageActivity(@RequestBody Sched sched) {
+    
+    @ResponseBody
+    @GetMapping("/cron")
+    public void sendMessageActivity(@RequestBody ToDo todo) {
        
-		LocalDateTime dateTime = sched.getDate();
+		LocalDateTime dateTime = todo.getExpiration_date();
 		int minute = dateTime.getMinute();
 		int hours = dateTime.getHour();
 		int day = dateTime.getDayOfMonth();
@@ -142,6 +145,6 @@ public class ToDoController {
 		String expression = " 0 " + (minute - 30) + " " + hours + " " + day + " " + month + " ?";
 		System.out.println(expression);
 		CronTrigger trigger = new CronTrigger(expression, TimeZone.getTimeZone(TimeZone.getDefault().getID()));
-		scheduler.schedule(sched, trigger);
+		scheduler.schedule(todo, trigger);
     }
 }
