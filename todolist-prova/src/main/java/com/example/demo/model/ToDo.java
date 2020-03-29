@@ -5,9 +5,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -36,6 +33,10 @@ public class ToDo implements Runnable {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @NotNull
     private LocalDateTime expiration_date;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User user;
+    
+    
     public Long getId() {
         return id;
     }
@@ -92,6 +93,14 @@ public class ToDo implements Runnable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override

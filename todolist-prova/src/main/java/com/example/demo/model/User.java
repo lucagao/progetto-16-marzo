@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.example.demo.model.Images;
+import com.example.demo.model.ToDo;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class User {
     @OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_image", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "image_id"))
     private Images image;
-    @OneToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "users_activities",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "activity_id"))
     private List<ToDo> activities;
     

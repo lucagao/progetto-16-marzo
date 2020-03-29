@@ -55,6 +55,8 @@ public class ToDoController {
     @GetMapping("/todo")
     public String ToDo(Model model){
         List<ToDo>todos = todoService.getAllTodo();
+    	//User user = new User();
+    	//List<ToDo>todos = user.getActivities();
         model.addAttribute("todos", todos);
         model.addAttribute("todo", new ToDo());
         model.addAttribute("title", "ToDo");
