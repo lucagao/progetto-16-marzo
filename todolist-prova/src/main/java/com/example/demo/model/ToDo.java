@@ -20,22 +20,20 @@ public class ToDo implements Runnable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name ="id")
+    @Column(name ="activity_id")
     private Long id;
-    @Column(name = "firstName")
-    private String firstName;
-    @Column(name = "lastName")
-    private String lastName;
-    @Column(name = "email")
-    private String email;
     @Column(name = "activity")
     private String activity;
+    @Column(name = "type")
+    private String type;
+    @Column(name = "desciption")
+    private String description;
     @Column(name = "create_date")
     private Date createdDate;
     @Column(name = "updated_date")
     private Date updatedDate;
     @Column(name = "expiration_date")
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @NotNull
     private LocalDateTime expiration_date;
     public Long getId() {
@@ -52,30 +50,6 @@ public class ToDo implements Runnable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getActivity() {
@@ -102,6 +76,22 @@ public class ToDo implements Runnable {
 
 	public void setExpiration_date(LocalDateTime expiration_date) {
 		this.expiration_date = expiration_date;
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

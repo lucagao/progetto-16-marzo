@@ -12,13 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +37,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 @Controller
+@EnableScheduling
 public class ToDoController {
 	
     @Autowired
@@ -142,7 +142,7 @@ public class ToDoController {
 		int hours = dateTime.getHour();
 		int day = dateTime.getDayOfMonth();
 		int month = dateTime.getMonth().getValue();
-		String expression = " 0 " + (minute - 30) + " " + hours + " " + day + " " + month + " ?";
+		String expression = " 0 " + minute  + " " + hours + " " + day + " " + month + " ?";
 		System.out.println(expression);
 		CronTrigger trigger = new CronTrigger(expression, TimeZone.getTimeZone(TimeZone.getDefault().getID()));
 		scheduler.schedule(todo, trigger);

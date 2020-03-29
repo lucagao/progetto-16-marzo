@@ -5,6 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.example.demo.model.Images;
 
+import java.util.List;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -51,6 +53,9 @@ public class User {
     @OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_image", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "image_id"))
     private Images image;
+    @OneToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(name = "users_activities",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "activity_id"))
+    private List<ToDo> activities;
     
 	public Long getId() {
 		return id;
@@ -111,6 +116,12 @@ public class User {
 	}
 	public void setImage(Images image) {
 		this.image = image;
+	}
+	public List<ToDo> getActivities() {
+		return activities;
+	}
+	public void setActivities(List<ToDo> activities) {
+		this.activities = activities;
 	}
 	
 	
