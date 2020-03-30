@@ -110,7 +110,7 @@ public class ToDoController {
         return "redirect:/todo";
     }
     @GetMapping(value ="/image")
-    public String imagepage() {
+    public String imagePage() {
     	return "/image";
     }
     

@@ -19,17 +19,17 @@ public class ToDo implements Runnable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name ="activity_id")
     private Long id;
-    @Column(name = "activity")
+
     private String activity;
-    @Column(name = "type")
+
     private String type;
-    @Column(name = "desciption")
+
     private String description;
-    @Column(name = "create_date")
+
     private Date createdDate;
-    @Column(name = "updated_date")
+
     private Date updatedDate;
-    @Column(name = "expiration_date")
+    
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @NotNull
     private LocalDateTime expiration_date;
