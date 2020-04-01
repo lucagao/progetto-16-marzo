@@ -33,6 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -48,6 +49,7 @@ public class ToDoController {
     
     @Autowired
 	private ImageServiceImpl imageService;
+    
     
 	@Autowired
 	TaskScheduler scheduler;
@@ -67,7 +69,13 @@ public class ToDoController {
 
     @PostMapping(value="/save")
     public String save (@ModelAttribute ToDo todo, RedirectAttributes redirectAttributes, Model model) {
+    	
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    User user = userService.findUserByUserName(auth.getName());	
         ToDo dbtodo = todoService.save(todo);
+        user.getActivities().add(dbtodo);
+        userService.save(user);
+   
         if(dbtodo != null) {
             redirectAttributes.addFlashAttribute("successmessage", "ToDo is saved successfully");
             return "redirect:/todo";
@@ -121,9 +129,21 @@ public class ToDoController {
 		User user = userService.findUserByUserName(auth.getName());
 		Images image = imageService.salvaFile(file);
 		userService.uploadImage(user, image);
-		modelAndView.setViewName("image");
+		modelAndView.setViewName("profilo");
 		return modelAndView;
 	}
+    
+    @RequestMapping(value = "/profilo", method = RequestMethod.POST)
+    public String profilo(Model model) {   	
+    	Images images = new Images();
+    	model.addAttribute("authUserImage", Base64.getEncoder().encodeToString(images.getData()));
+    	return "/profilo";
+    }
+    
+    
+    
+    
+    
     @GetMapping("/downloadFile/{fileId}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
         // Load file from database
