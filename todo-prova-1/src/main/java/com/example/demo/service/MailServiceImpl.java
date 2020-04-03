@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MailServiceImpl implements MailService{
-
+	
+	@Autowired
+	private MailContentBuilder mailContentBuilder;
+	
 	@Autowired
 	private JavaMailSender javaMailSender;
 
@@ -19,7 +22,8 @@ public class MailServiceImpl implements MailService{
 		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 		mimeMessageHelper.setSubject(mailObject);
 		mimeMessageHelper.setTo(mailAddressee);
-		mimeMessageHelper.setText(mailMessage, true);
+		String content = mailContentBuilder.build(mailMessage);
+		mimeMessageHelper.setText(content, true);
 		javaMailSender.send(mimeMessage);
 	}	
 	
